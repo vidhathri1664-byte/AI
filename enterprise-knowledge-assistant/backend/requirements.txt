@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-dotenv
+sqlalchemy
+psycopg2-binary
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+pydantic
+pydantic-settings
+langchain
+langchain-openai
+faiss-cpu
+openai
+pymupdf
+python-docx
+python-pptx
