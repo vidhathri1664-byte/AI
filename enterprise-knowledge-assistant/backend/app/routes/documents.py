@@ -1,5 +1,10 @@
 from pathlib import Path
 import shutil
+from app.services.document_processor import (
+    DocumentProcessingError,
+    process_document,
+)
+
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
@@ -48,6 +53,13 @@ def upload_document(
     db.add(document)
     db.commit()
     db.refresh(document)
+    try:
+      chunk_count = process_document(document, db)
+    except DocumentProcessingError as exc:
+      raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail=str(exc),
+    ) from exc
 
     return {
         "id": document.id,
@@ -55,4 +67,5 @@ def upload_document(
         "file_type": document.file_type,
         "upload_status": document.upload_status,
         "owner_id": document.owner_id,
+        "chunk_count": chunk_count,
     }
