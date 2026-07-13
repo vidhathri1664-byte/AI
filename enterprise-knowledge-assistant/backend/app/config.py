@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
     openai_api_key: str | None = None
+    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    vector_store_path: str = "vector_store/document_chunks.faiss"
 
     class Config:
         env_file = ENV_FILE
